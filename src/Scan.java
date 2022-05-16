@@ -1,59 +1,47 @@
+import com.kitfox.svg.A;
 
-import java.util.Collections;
-import java.util.ArrayList;
+import java.util.*;
 
-public class Scan {
-    int seekTime = 0;
-    ArrayList<Integer> Visited = new ArrayList<>();
+public class SSTF {
 
-    Scan(ArrayList<Integer> Queue, int trackSize, int head, int previous)
-    {
-        ArrayList<Integer> temp = new ArrayList(Queue);
-        temp.add(head);
-        Collections.sort(temp);
-        int ind = temp.indexOf(head);
+    private  List<Integer> temp;
+    private  List<Integer> difference = new ArrayList<>();;
+    private  ArrayList<Integer> Visited= new ArrayList<>();
+    private  List<Integer> temp2;
+    private int seekTime = 0;
 
-        if (previous < head)
-        {
-            for (int i = ind; i < temp.size(); i++)
-            {
-                Visited.add(temp.get(i));
+
+    SSTF(ArrayList<Integer> Queue,int head){
+        int variableHead = head;
+        int min;
+        int j;
+       temp = new ArrayList<>(Queue);
+
+        for (int i = 0 ; i < Queue.size(); i++) {
+            difference = new ArrayList<>();
+
+            for (Integer integer : temp) {
+
+                difference.add(Math.abs(integer - variableHead));
             }
+            min = Collections.min(difference);
+            j = difference.indexOf(min);
+            variableHead = temp.get(j);
+            Visited.add(temp.get(j));
+            temp.remove(j);
 
-            Visited.add(trackSize-1);
 
-            for(int i = ind-1; i >= 0; i--)
-            {
-                Visited.add(temp.get(i));
-            }
-
-            for (int i = 0; i < Visited.size() - 1; i++)
-            {
-                seekTime += Math.abs(Visited.get(i) - Visited.get(i+1));
-            }
         }
 
-        else
+      Visited.add(0,head);
+
+        for (int i = 0; i < Visited.size() - 1; i++)
         {
-            for (int i = ind; i >= 0; i--)
-            {
-                Visited.add(temp.get(i));
-            }
-
-            Visited.add(0);
-
-            for(int i = ind+1; i < temp.size(); i++)
-            {
-                Visited.add(temp.get(i));
-            }
-
-            for (int i = 0; i < Visited.size() - 1; i++)
-            {
-                seekTime += Math.abs(Visited.get(i) - Visited.get(i+1));
-            }
+            seekTime += Math.abs(Visited.get(i) - Visited.get(i+1));
         }
+
+
     }
-
     ArrayList<Integer> getSequence()
     {
         return Visited;
@@ -63,6 +51,6 @@ public class Scan {
     {
         return seekTime;
     }
+
+
 }
-
-
