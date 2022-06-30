@@ -1,4 +1,5 @@
-import com.kitfox.svg.A;
+package diskscheduling;
+
 
 import java.util.*;
 
@@ -12,29 +13,33 @@ public class SSTF {
 
 
     SSTF(ArrayList<Integer> Queue,int head){
+        int variableHead = head;
+        int min;
+        int j;
+        temp = new ArrayList<>(Queue);
 
-       temp = new ArrayList<>(Queue);
+        for (int i = 0 ; i < Queue.size(); i++) {
+            difference = new ArrayList<>();
 
-        for (Integer integer : temp) {
-            difference.add(Math.abs(integer - head));
+            for (Integer integer : temp) {
+
+                difference.add(Math.abs(integer - variableHead));
+            }
+            min = Collections.min(difference);
+            j = difference.indexOf(min);
+            variableHead = temp.get(j);
+            Visited.add(temp.get(j));
+            temp.remove(j);
+
 
         }
-      temp2 =  new ArrayList<>(difference);
-     Collections.sort(temp2);
 
-      for(int i = 0 ; i < temp.size() ; i++){
-
-          Visited.add(temp.get(difference.indexOf(temp2.get(i))));
-
-      }
-
-      Visited.add(0,head);
+        Visited.add(0,head);
 
         for (int i = 0; i < Visited.size() - 1; i++)
         {
             seekTime += Math.abs(Visited.get(i) - Visited.get(i+1));
         }
-
 
 
     }
